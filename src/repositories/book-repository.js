@@ -12,10 +12,25 @@ class BookRepository {
         }
     }
 
-    async getBook(bookId){
+    async getBook(bookId) {
         try {
             const book = await Book.findByPk(bookId);
             return book;
+        } catch (error) {
+            console.log("something went wrong in repository layer");
+            console.log(error);
+            throw { error };
+        }
+    }
+
+    async deleteBook(bookId) {
+        try {
+            await Book.destroy({
+                where: {
+                    id: bookId,
+                },
+            });
+            return true;
         } catch (error) {
             console.log("something went wrong in repository layer");
             console.log(error);

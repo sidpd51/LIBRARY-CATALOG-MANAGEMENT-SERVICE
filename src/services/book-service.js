@@ -24,6 +24,16 @@ class BookService {
             console.log(error);
         }
     }
+
+    async deleteBook(bookId) {
+        try {
+            const response = this.bookRepository.deleteBook(bookId);
+            return response;
+        } catch (error) {
+            console.log("something went wrong in service layer");
+            console.log(error);
+        }
+    }
 }
 
 module.exports = BookService;
