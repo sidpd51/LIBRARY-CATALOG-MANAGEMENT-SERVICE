@@ -47,13 +47,13 @@ module.exports = {
             isbn: {
                 type: Sequelize.STRING,
                 allowNull: false,
-                unique:true,
+                unique: true,
                 validate: {
-                  is: {
-                    args: /^(ISBN(?:-1[03])?: )?(?=[-0-9]{10,17}$)(?=(?:\d+-?){4,7}\d+$)(?=\d{1,5}[- ]?\d+[- ]?\d+[- ]?(\d|X)$)(\d{1,5}[- ]?\d+[- ]?(\d|X)|\d{13})$/,
-                    msg: "ISBN must be a valid ISBN-10 or ISBN-13 format."
-                  }
-                }
+                    is: {
+                        args: /^(ISBN(?:-1[03])?: )?(?=[-0-9]{10,17}$)(?=(?:\d+-?){4,7}\d+$)(?=\d{1,5}[- ]?\d+[- ]?\d+[- ]?(\d|X)$)(\d{1,5}[- ]?\d+[- ]?(\d|X)|\d{13})$/,
+                        msg: "ISBN must be a valid ISBN-10 or ISBN-13 format.",
+                    },
+                },
             },
             publicationDate: {
                 type: Sequelize.DATE,
