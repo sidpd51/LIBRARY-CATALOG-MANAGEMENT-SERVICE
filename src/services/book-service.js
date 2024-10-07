@@ -14,6 +14,16 @@ class BookService {
             console.log(error);
         }
     }
+
+    async getBook(bookId) {
+        try {
+            const book = this.bookRepository.getBook(bookId);
+            return book;
+        } catch (error) {
+            console.log("something went wrong in service layer");
+            console.log(error);
+        }
+    }
 }
 
 module.exports = BookService;

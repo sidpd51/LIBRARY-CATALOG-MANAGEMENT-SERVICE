@@ -21,6 +21,26 @@ const create = async (req, res) => {
     }
 };
 
+const get = async (req, res) => {
+    try {
+        const book = await bookService.getBook(req.params.id);
+        return res.status(201).json({
+            data: book,
+            success: true,
+            message: "Successfully got the book!",
+            err: {},
+        });
+    } catch (error) {
+        return res.status(500).json({
+            data: {},
+            success: false,
+            message: "Not able to get the book!",
+            err: error,
+        });
+    }
+};
+
 module.exports = {
-    create
-}
+    create,
+    get,
+};
