@@ -43,6 +43,14 @@ const get = async (req, res) => {
 const destroy = async (req, res) => {
     try {
         const response = await bookService.deleteBook(req.params.id);
+        if (!response) {
+            return res.status(404).json({
+                data: response,
+                success: false,
+                message: "Book not found!",
+                err: {},
+            });
+        }
         return res.status(201).json({
             data: response,
             success: true,
@@ -62,9 +70,9 @@ const destroy = async (req, res) => {
 const update = async (req, res) => {
     try {
         const response = await bookService.updateBook(req.body, req.params.id);
-        if(!response){
+        if (!response) {
             //throw error that item doesn't exist
-            console.log("item doesn't exist!")
+            console.log("item doesn't exist!");
         }
         return res.status(201).json({
             data: response,

@@ -26,12 +26,16 @@ class BookRepository {
 
     async deleteBook(bookId) {
         try {
-            await Book.destroy({
+            const response = await Book.destroy({
                 where: {
                     id: bookId,
                 },
             });
-            return true;
+            if (response) {
+                return true;
+            }
+
+            return false;
         } catch (error) {
             console.log("something went wrong in repository layer");
             console.log(error);
@@ -41,13 +45,13 @@ class BookRepository {
 
     async updateBook(data, bookId) {
         try {
-            const response = await Book.update(data,{
+            const response = await Book.update(data, {
                 where: {
-                    id: bookId
-                }
-            })
-            if(response[0]){
-                return true
+                    id: bookId,
+                },
+            });
+            if (response[0]) {
+                return true;
             }
             return false;
         } catch (error) {
@@ -56,7 +60,6 @@ class BookRepository {
             throw { error };
         }
     }
-
 }
 
 module.exports = BookRepository;
