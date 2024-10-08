@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const { Book } = require("../models/index.js");
 
 class BookRepository {
@@ -37,6 +38,25 @@ class BookRepository {
             throw { error };
         }
     }
+
+    async updateBook(data, bookId) {
+        try {
+            const response = await Book.update(data,{
+                where: {
+                    id: bookId
+                }
+            })
+            if(response[0]){
+                return true
+            }
+            return false;
+        } catch (error) {
+            console.log("something went wrong in repository layer");
+            console.log(error);
+            throw { error };
+        }
+    }
+
 }
 
 module.exports = BookRepository;
