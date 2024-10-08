@@ -94,9 +94,30 @@ const update = async (req, res) => {
     }
 };
 
+const getAll = async (req, res) => {
+    try {
+        const books = await bookService.getAllBook(req.query);
+        return res.status(201).json({
+            data: books,
+            success: true,
+            message: "Successfully got the book!",
+            err: {},
+        });
+    } catch (error) {
+        return res.status(500).json({
+            data: {},
+            success: false,
+            message: "Not able to get the book!",
+            err: error,
+        });
+    }
+};
+
+
 module.exports = {
     create,
     get,
     destroy,
     update,
+    getAll
 };

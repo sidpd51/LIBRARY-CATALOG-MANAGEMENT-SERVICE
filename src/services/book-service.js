@@ -44,6 +44,16 @@ class BookService {
             console.log(error);
         }
     }
+
+    async getAllBook(filter) {
+        try {
+            const books = this.bookRepository.getAllBook(filter);
+            return books;
+        } catch (error) {
+            console.log("something went wrong in service layer");
+            console.log(error);
+        }
+    }
 }
 
 module.exports = BookService;
