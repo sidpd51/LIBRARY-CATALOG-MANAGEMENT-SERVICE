@@ -1,5 +1,7 @@
 const { Op } = require("sequelize");
 const { Book } = require("../models/index.js");
+const { ValidationError, AppError } = require("../utils/errors/index.js");
+const { StatusCodes } = require("http-status-codes");
 
 class BookRepository {
     #searchFilter(data) {
@@ -48,7 +50,7 @@ class BookRepository {
                 price: { [Op.lte]: data.maxYear },
             });
         }
-        
+
         return filter;
     }
     async createBook(data) {
@@ -56,20 +58,39 @@ class BookRepository {
             const book = await Book.create(data);
             return book;
         } catch (error) {
-            console.log("something went wrong in repository layer");
-            console.log(error);
-            throw { error };
+            if (error.name == "SequelizeValidationError") {
+                throw new ValidationError(error);
+            }
+            if (error.name == "SequelizeUniqueConstraintError") {
+                throw new AppError(
+                    "ValidationError",
+                    error.message,
+                    "Isbn no. should be unique!",
+                    StatusCodes.BAD_REQUEST
+                );
+            }
+
+            throw new AppError(
+                "RepositoryError",
+                "Cannot add the Book",
+                "There was some issue adding book, please try again later!",
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
     async getBook(bookId) {
         try {
             const book = await Book.findByPk(bookId);
+
             return book;
         } catch (error) {
-            console.log("something went wrong in repository layer");
-            console.log(error);
-            throw { error };
+            throw new AppError(
+                "RepositoryError",
+                "Cannot get the Book",
+                "There was some issue getting the book, please try again later!",
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -86,9 +107,12 @@ class BookRepository {
 
             return false;
         } catch (error) {
-            console.log("something went wrong in repository layer");
-            console.log(error);
-            throw { error };
+            throw new AppError(
+                "RepositoryError",
+                "Cannot delete Book",
+                "There was some issue deleting book, please try again later!",
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -104,9 +128,32 @@ class BookRepository {
             }
             return false;
         } catch (error) {
-            console.log("something went wrong in repository layer");
-            console.log(error);
-            throw { error };
+            if (error.name == "SequelizeValidationError") {
+                throw new ValidationError(error);
+            }
+            if (error.name == "SequelizeUniqueConstraintError") {
+                throw new AppError(
+                    "ValidationError",
+                    error.message,
+                    "Isbn no. should be unique!",
+                    StatusCodes.BAD_REQUEST
+                );
+            }
+            if (error.name == "SequelizeDatabaseError") {
+                throw new AppError(
+                    "ValidationError",
+                    error.message,
+                    "Required fields can't be empty!",
+                    StatusCodes.BAD_REQUEST
+                );
+            }
+
+            throw new AppError(
+                "RepositoryError",
+                "Cannot update Book",
+                "There was some issue updating the book, please try again later!",
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -119,9 +166,12 @@ class BookRepository {
 
             return book;
         } catch (error) {
-            console.log("something went wrong in repository layer");
-            console.log(error);
-            throw { error };
+            throw new AppError(
+                "RepositoryError",
+                "Cannot get the Book",
+                "There was some issue getting the book, please try again later!",
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
         }
     }
 }
