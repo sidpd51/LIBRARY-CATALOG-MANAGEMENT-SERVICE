@@ -37,8 +37,8 @@ The Catalog Management Service is a backend microservice for the Library Managem
 ```
 
 3. Run `npm install` in the root folder to install all project dependencies.
-4. Run `npx sequelize db:create`, this will create database
-5. Then run `npx sequelize db:migrate`, this will generate tables in the database
+4. Run `npx sequelize db:create` in `/src`, this will create database
+5. Then run `npx sequelize db:migrate` in `/src`, this will generate tables in the database
 6. Verify from mysql and run `npm run start`
 
 ## Show your support
