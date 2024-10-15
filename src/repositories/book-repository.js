@@ -1,6 +1,10 @@
 const { Op } = require("sequelize");
 const { Book } = require("../models/index.js");
-const { ValidationError, AppError } = require("../utils/errors/index.js");
+const {
+    ValidationError,
+    AppError,
+    BookNotFoundError,
+} = require("../utils/errors/index.js");
 const { StatusCodes } = require("http-status-codes");
 
 class BookRepository {
@@ -83,12 +87,7 @@ class BookRepository {
         try {
             const book = await Book.findByPk(bookId);
             if (book == null) {
-                throw new AppError(
-                    "BookNotFoundError",
-                    "Book not found!",
-                    "Please check if the book ID is correct and try again",
-                    StatusCodes.BAD_REQUEST
-                );
+                throw new BookNotFoundError();
             }
             return book;
         } catch (error) {
@@ -115,12 +114,7 @@ class BookRepository {
                 return true;
             }
 
-            throw new AppError(
-                "BookNotFoundError",
-                "Book not found!",
-                "Please check if the book ID is correct and try again",
-                StatusCodes.BAD_REQUEST
-            );
+            throw new BookNotFoundError();
         } catch (error) {
             if (error.name == "BookNotFoundError") {
                 throw error;
@@ -141,11 +135,11 @@ class BookRepository {
                     id: bookId,
                 },
             });
-            console.log(response)
             if (response[0]) {
                 return true;
             }
-            return false;
+
+            throw new BookNotFoundError()
         } catch (error) {
             if (error.name == "BookNotFoundError") {
                 throw error;
@@ -186,12 +180,7 @@ class BookRepository {
                 where: filterObject,
             });
             if (book == null) {
-                throw new AppError(
-                    "BookNotFoundError",
-                    "Book not found!",
-                    "Please check if the book ID is correct and try again",
-                    StatusCodes.BAD_REQUEST
-                );
+                throw new BookNotFoundError();
             }
             return book;
         } catch (error) {
