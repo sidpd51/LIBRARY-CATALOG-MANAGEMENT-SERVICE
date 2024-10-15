@@ -82,7 +82,14 @@ class BookRepository {
     async getBook(bookId) {
         try {
             const book = await Book.findByPk(bookId);
-
+            if (book == null) {
+                throw new AppError(
+                    "BookNotFoundError",
+                    "Book not found!",
+                    "Please check if the book ID is correct and try again",
+                    StatusCodes.BAD_REQUEST
+                );
+            }
             return book;
         } catch (error) {
             throw new AppError(
@@ -163,7 +170,14 @@ class BookRepository {
             const book = await Book.findAll({
                 where: filterObject,
             });
-
+            if (book == null) {
+                throw new AppError(
+                    "BookNotFoundError",
+                    "Book not found!",
+                    "Please check if the book ID is correct and try again",
+                    StatusCodes.BAD_REQUEST
+                );
+            }
             return book;
         } catch (error) {
             throw new AppError(
