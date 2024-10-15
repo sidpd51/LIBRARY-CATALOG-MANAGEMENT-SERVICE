@@ -108,11 +108,17 @@ class BookRepository {
                     id: bookId,
                 },
             });
+            console.log(response)
             if (response) {
                 return true;
             }
 
-            return false;
+            throw new AppError(
+                "BookNotFoundError",
+                "Book not found!",
+                "Please check if the book ID is correct and try again",
+                StatusCodes.BAD_REQUEST
+            );
         } catch (error) {
             throw new AppError(
                 "RepositoryError",
