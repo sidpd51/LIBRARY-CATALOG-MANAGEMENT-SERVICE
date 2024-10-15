@@ -42,7 +42,6 @@ class BookService {
             const response = this.bookRepository.deleteBook(bookId);
             return response;
         } catch (error) {
-            console.log(error.name);
             if (
                 error.name == "RepositoryError" ||
                 error.name == "BookNotFoundError"
