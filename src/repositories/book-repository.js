@@ -27,7 +27,9 @@ class BookRepository {
         }
 
         if (data.edition) {
-            filter.edition = data.edition;
+            filter.edition = {
+                [Op.startsWith]: data.edition,
+            };
         }
 
         if (data.isbn) {
@@ -139,7 +141,7 @@ class BookRepository {
                 return true;
             }
 
-            throw new BookNotFoundError()
+            throw new BookNotFoundError();
         } catch (error) {
             if (error.name == "BookNotFoundError") {
                 throw error;
@@ -179,10 +181,10 @@ class BookRepository {
             const book = await Book.findAll({
                 where: filterObject,
             });
-            if (book.length===0) {
+            if (book.length === 0) {
                 throw new BookNotFoundError();
             }
-            console.log(book)
+            console.log(book);
             return book;
         } catch (error) {
             if (error.name == "BookNotFoundError") {
