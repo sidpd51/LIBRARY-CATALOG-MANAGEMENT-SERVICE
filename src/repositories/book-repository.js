@@ -92,6 +92,9 @@ class BookRepository {
             }
             return book;
         } catch (error) {
+            if (error.name == "BookNotFoundError") {
+                throw error;
+            }
             throw new AppError(
                 "RepositoryError",
                 "Cannot get the Book",
@@ -108,7 +111,6 @@ class BookRepository {
                     id: bookId,
                 },
             });
-            console.log(response)
             if (response) {
                 return true;
             }
@@ -120,6 +122,9 @@ class BookRepository {
                 StatusCodes.BAD_REQUEST
             );
         } catch (error) {
+            if (error.name == "BookNotFoundError") {
+                throw error;
+            }
             throw new AppError(
                 "RepositoryError",
                 "Cannot delete Book",
@@ -136,11 +141,15 @@ class BookRepository {
                     id: bookId,
                 },
             });
+            console.log(response)
             if (response[0]) {
                 return true;
             }
             return false;
         } catch (error) {
+            if (error.name == "BookNotFoundError") {
+                throw error;
+            }
             if (error.name == "SequelizeValidationError") {
                 throw new ValidationError(error);
             }
@@ -186,6 +195,9 @@ class BookRepository {
             }
             return book;
         } catch (error) {
+            if (error.name == "BookNotFoundError") {
+                throw error;
+            }
             throw new AppError(
                 "RepositoryError",
                 "Cannot get the Book",

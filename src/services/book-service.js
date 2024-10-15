@@ -27,7 +27,10 @@ class BookService {
             const book = this.bookRepository.getBook(bookId);
             return book;
         } catch (error) {
-            if (error.name == "RepositoryError") {
+            if (
+                error.name == "RepositoryError" ||
+                error.name == "BookNotFoundError"
+            ) {
                 throw error;
             }
             throw new ServiceError();
@@ -39,7 +42,11 @@ class BookService {
             const response = this.bookRepository.deleteBook(bookId);
             return response;
         } catch (error) {
-            if (error.name == "RepositoryError") {
+            console.log(error.name);
+            if (
+                error.name == "RepositoryError" ||
+                error.name == "BookNotFoundError"
+            ) {
                 throw error;
             }
             throw new ServiceError();
@@ -53,7 +60,8 @@ class BookService {
         } catch (error) {
             if (
                 error.name == "ValidationError" ||
-                error.name == "RepositoryError"
+                error.name == "RepositoryError" ||
+                error.name == "BookNotFoundError"
             ) {
                 throw error;
             }
@@ -66,7 +74,10 @@ class BookService {
             const books = this.bookRepository.getAllBook(filter);
             return books;
         } catch (error) {
-            if (error.name == "RepositoryError") {
+            if (
+                error.name == "RepositoryError" ||
+                error.name == "BookNotFoundError"
+            ) {
                 throw error;
             }
             throw new ServiceError();
